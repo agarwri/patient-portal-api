@@ -81,8 +81,8 @@ export default class CognitoStack extends sst.Stack {
       roleArn: authenticatedRoles.adminRole.roleArn,
     });
 
-    const postConfirmationRole = new iam.Role(this, 'postConfirmationTriggerRole', {
-      roleName: 'postConfirmationTriggerRole',
+    const postConfirmationRole = new iam.Role(this, 'postConfirmationTriggerFnRole', {
+      roleName: 'postConfirmationTriggerFnRole',
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole")
