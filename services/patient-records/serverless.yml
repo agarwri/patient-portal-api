@@ -1,0 +1,166 @@
+service: patient-records-api
+
+# Create an optimized package for our functions
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle # Package our functions with Webpack
+  - serverless-offline
+  - serverless-dotenv-plugin # Load .env as environment variables
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or falls back to what we have set in the provider section.
+  stage: ${opt:stage, self:provider.stage}
+  # Name of the SST app that's deploying our infrastructure
+  sstApp: ${self:custom.stage}-patient-portal-infra
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+
+  # These environment variables are made available to our functions
+  # under process.env.
+  environment:
+    stripeSecretKey: ${env:STRIPE_SECRET_KEY}
+    tableName: !ImportValue '${self:custom.sstApp}-TableName'
+    indexName: !ImportValue '${self:custom.sstApp}-IndexName'
+    userPoolId: !ImportValue '${self:custom.sstApp}-UserPoolId'
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
+      Resource:
+        - !ImportValue '${self:custom.sstApp}-TableArn'
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
+      Resource:
+        - !ImportValue '${self:custom.sstApp}-IndexArn'
+    - Effect: Allow
+      Action:
+        - cognito-idp:ListPatients
+      # Restrict our IAM role permissions to
+      # the specific table for the stage
+      Resource:
+        - !ImportValue '${self:custom.sstApp}-UserPoolArn'
+# Create our resources with separate CloudFormation templates
+# Create our resources with separate CloudFormation templates
+
+
+functions:
+  # Defines an HTTP API endpoint that calls the main function in create.js
+  # - path: url path is /patientRecords
+  # - method: POST request
+  # - cors: enabled CORS (Cross-Origin Resource Sharing) for browser cross
+  #     domain api call
+  # - authorizer: authenticate using the AWS IAM role
+  create:
+    handler: create.main
+    events:
+      - http:
+          path: patientRecords
+          method: post
+          cors: true
+          authorizer: aws_iam
+  get:
+    # Defines an HTTP API endpoint that calls the main function in get.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: get.main
+    events:
+      - http:
+          path: patientRecords/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  list:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /patientRecords
+    # - method: GET request
+    handler: list.main
+    events:
+      - http:
+          path: patientRecords
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  update:
+    # Defines an HTTP API endpoint that calls the main function in update.js
+    # - path: url path is /patientRecords/{id}
+    # - method: PUT request
+    handler: update.main
+    events:
+      - http:
+          path: patientRecords/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  delete:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /patientRecords/{id}
+    # - method: DELETE request
+    handler: delete.main
+    events:
+      - http:
+          path: patientRecords/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+  billing:
+    # Defines an HTTP API endpoint that calls the main function in billing.js
+    # - path: url path is /billing
+    # - method: POST request
+    handler: billing.main
+    events:
+      - http:
+          path: billing
+          method: post
+          cors: true
+          authorizer: aws_iam
+
+  listPatients:
+    # Defines an HTTP API endpoint that calls the main function in listPatients.js
+    # - path: url path is /billing
+    # - method: POST request
+    handler: listPatients.main
+    events:
+      - http:
+          path: patients
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  listRecordsForPatient:
+    # Defines an HTTP API endpoint that calls the main function in listRecordsForPatient.js
+    # - path: url path is /listrecordsforpatient
+    # - method: POST request
+    handler: listRecordsForPatient.main
+    events:
+      - http:
+          path: patients/{userPoolUserId}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+  # Cognito Identity Pool Policy
+  - ${file(resources/cognito-policy.yml)}
