@@ -53,7 +53,7 @@ provider:
         - !ImportValue '${self:custom.sstApp}-IndexArn'
     - Effect: Allow
       Action:
-        - cognito-idp:ListPatients
+        - cognito-idp:ListUsers
       # Restrict our IAM role permissions to
       # the specific table for the stage
       Resource:
