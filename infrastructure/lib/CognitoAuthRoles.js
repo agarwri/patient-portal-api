@@ -74,7 +74,7 @@ export default class CognitoAuthRoles extends cdk.Construct {
       {
         identityPoolId: identityPool.ref,
         roles: {
-          authenticated: this.role.roleArn,
+          authenticated: this.adminRole.roleArn,
         },
         roleMappings: {
           cognitoProvider: {
