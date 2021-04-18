@@ -48,7 +48,7 @@ export default class CognitoStack extends sst.Stack {
         actions: ["s3:*"],
         effect: iam.Effect.ALLOW,
         resources: [
-          bucketArn,
+          bucketArn + "/private/${cognito-identity.amazonaws.com:sub}/*",
         ],
       })
     );
@@ -60,7 +60,7 @@ export default class CognitoStack extends sst.Stack {
         actions: ["s3:*"],
         effect: iam.Effect.ALLOW,
         resources: [
-          bucketArn + "/private/*",
+          bucketArn + "/private/*/*",
         ],
       })
     );
