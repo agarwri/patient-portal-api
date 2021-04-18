@@ -59,9 +59,7 @@ export default class CognitoStack extends sst.Stack {
       new iam.PolicyStatement({
         actions: ["s3:*"],
         effect: iam.Effect.ALLOW,
-        resources: [
-          bucketArn + "/private/*/*",
-        ],
+        resources: [ '*' ],
       })
     );
 
