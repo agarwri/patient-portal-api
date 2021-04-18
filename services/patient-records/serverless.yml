@@ -159,6 +159,18 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  getRecordForPatient:
+    # Defines an HTTP API endpoint that calls the main function in getRecordForPatient.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: getRecordForPatient.main
+    events:
+      - http:
+          path: patients/{userPoolUserId}/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
 resources:
   # API Gateway Errors
   - ${file(resources/api-gateway-errors.yml)}
