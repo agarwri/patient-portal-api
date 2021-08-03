@@ -31,17 +31,54 @@ export default class CognitoStack extends sst.Stack {
           required: false,
           mutable: true,
         },
+        phoneNumber: {
+          required: false,
+          mutable: true,
+        },
         address: {
           required: false,
           mutable: true,
         },
+        customAttributes: {
+          city: new cognito.StringAttribute({mutable: true}),  
+        },
       },
     });
+
+  /* const clientReadAttributes = new cognito.ClientAttributes()
+    .withStandardAttributes({  
+      email: true,
+      // 👇 users can't update their emailVerified attribute
+      emailVerified: false,
+      address: true,
+      birthdate: true,
+      gender: true,
+      fullname: true,
+      phoneNumber: true,
+  
+    })
+    .withCustomAttributes(...['city']);
+
+  const clientWriteAttributes = new cognito.ClientAttributes()
+    .withStandardAttributes({  
+    email: true,
+    // 👇 users can't update their emailVerified attribute
+    emailVerified: false,
+    address: true,
+    birthdate: true,
+    gender: true,
+    fullname: true,
+    phoneNumber: true,
+
+    })
+    .withCustomAttributes(...['city']); */
 
 
     const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPool,
       generateSecret: false, // Don't need to generate secret for web app running on browsers
+      /* readAttributes: clientReadAttributes,
+      writeAttributes: clientWriteAttributes, */
     });
 
     const identityPool = new cognito.CfnIdentityPool(this, "IdentityPool", {
