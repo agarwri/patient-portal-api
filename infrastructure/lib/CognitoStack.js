@@ -38,10 +38,10 @@ export default class CognitoStack extends sst.Stack {
         address: {
           required: false,
           mutable: true,
-        },
-        customAttributes: {
-          city: new cognito.StringAttribute({mutable: true}),  
-        },
+        }, 
+      },
+      customAttributes: {
+        city: new cognito.StringAttribute({mutable: true}),  
       },
     });
 
