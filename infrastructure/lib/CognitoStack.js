@@ -18,6 +18,24 @@ export default class CognitoStack extends sst.Stack {
       selfSignUpEnabled: true, // Allow users to sign up
       autoVerify: { email: true }, // Verify email addresses by sending a verification code
       signInAliases: { email: true }, // Set email as an alias
+      standardAttributes: {
+        fullname: {
+          required: true,
+          mutable: true,
+        },
+        gender: {
+          required: false,
+          mutable: true,
+        },
+        birthdate: {
+          required: false,
+          mutable: true,
+        },
+        address: {
+          required: false,
+          mutable: true,
+        },
+      },
     });
 
 
