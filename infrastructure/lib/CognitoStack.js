@@ -14,7 +14,7 @@ export default class CognitoStack extends sst.Stack {
 
     const app = this.node.root;
 
-    const userPool = new cognito.UserPool(this, "UserPool", {
+    const userPool = new cognito.UserPool(this, "MyUserPool", {
       selfSignUpEnabled: true, // Allow users to sign up
       autoVerify: { email: true }, // Verify email addresses by sending a verification code
       signInAliases: { email: true }, // Set email as an alias
