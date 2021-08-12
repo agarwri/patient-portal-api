@@ -14,7 +14,7 @@ export default class CognitoStack extends sst.Stack {
 
     const app = this.node.root;
 
-    const userPool = new cognito.UserPool(this, "MyUserPool", {
+    const userPool = new cognito.UserPool(this, "UserPool", {
       selfSignUpEnabled: true, // Allow users to sign up
       autoVerify: { email: true }, // Verify email addresses by sending a verification code
       signInAliases: { email: true }, // Set email as an alias
@@ -44,35 +44,6 @@ export default class CognitoStack extends sst.Stack {
         city: new cognito.StringAttribute({mutable: true}),  
       },
     });
-
-  /* const clientReadAttributes = new cognito.ClientAttributes()
-    .withStandardAttributes({  
-      email: true,
-      // 👇 users can't update their emailVerified attribute
-      emailVerified: false,
-      address: true,
-      birthdate: true,
-      gender: true,
-      fullname: true,
-      phoneNumber: true,
-  
-    })
-    .withCustomAttributes(...['city']);
-
-  const clientWriteAttributes = new cognito.ClientAttributes()
-    .withStandardAttributes({  
-    email: true,
-    // 👇 users can't update their emailVerified attribute
-    emailVerified: false,
-    address: true,
-    birthdate: true,
-    gender: true,
-    fullname: true,
-    phoneNumber: true,
-
-    })
-    .withCustomAttributes(...['city']); */
-
 
     const userPoolClient = new cognito.UserPoolClient(this, "UserPoolClient", {
       userPool,
