@@ -14,7 +14,7 @@ export const main = handler(async (event, context) => {
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET date = :date, type = :type, clinic = :clinic, reason = :reason, attachments = :attachments,",
+    UpdateExpression: "SET date = :date, type = :type, clinic = :clinic, reason = :reason, attachments = :attachments",
     ExpressionAttributeValues: {
       ":date": data.date || null,
       ":type": data.type || null,
