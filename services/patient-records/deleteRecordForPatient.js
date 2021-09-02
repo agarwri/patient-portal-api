@@ -14,11 +14,8 @@ export const main = handler(async (event, context) => {
         ":recordId": event.pathParameters.id,
     },
     KeyConditionExpression: "userPoolUserId = :userPoolUserId and recordId = :recordId"
-        
   };
-        
   const recordToDeleteArray = await dynamoDb.query(getRecordParams);
-  // Return the matching list of items in response body
   const recordToDelete = recordToDeleteArray.Items[0];
   const identityId = recordToDelete.userId;
 
