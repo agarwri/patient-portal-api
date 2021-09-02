@@ -14,7 +14,7 @@ export const main = handler(async (event, context) => {
     },
     KeyConditionExpression: "userPoolUserId = :userPoolUserId and recordId = :recordId"
   };
-  
+
   const recordToUpdateArray = await dynamoDb.query(getRecordParams);
   const recordToUpdate = recordToUpdateArray.Items[0];
   const identityId = recordToUpdate.userId;
