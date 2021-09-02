@@ -23,8 +23,8 @@ export const main = handler(async (event, context) => {
       recordId: uuid.v1(),
       date: data.date,
       type: data.type,
-      clinic: date.clinic,
-      reason: date.reason,
+      clinic: data.clinic,
+      reason: data.reason,
       attachments: data.attachments,
       createdAt: Date.now()
     }
