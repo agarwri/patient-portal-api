@@ -154,7 +154,7 @@ functions:
     handler: listRecordsForPatient.main
     events:
       - http:
-          path: patients/{userPoolUserId}
+          path: patients/records/{userPoolUserId}
           method: get
           cors: true
           authorizer: aws_iam
@@ -166,8 +166,56 @@ functions:
     handler: getRecordForPatient.main
     events:
       - http:
-          path: patients/{userPoolUserId}/{id}
+          path: patients/records/{userPoolUserId}/{id}
           method: get
+          cors: true
+          authorizer: aws_iam
+
+  updateRecordForPatient:
+    # Defines an HTTP API endpoint that calls the main function in getRecordForPatient.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: updateRecordForPatient.main
+    events:
+      - http:
+          path: patients/records/{userPoolUserId}/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+  deleteRecordForPatient:
+    # Defines an HTTP API endpoint that calls the main function in getRecordForPatient.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: deleteRecordForPatient.main
+    events:
+      - http:
+          path: patients/records/{userPoolUserId}/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+  getProfileForPatient:
+    # Defines an HTTP API endpoint that calls the main function in getRecordForPatient.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: getProfileForPatient.main
+    events:
+      - http:
+          path: patients/profile/{userPoolUserId}
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+  updateProfileForPatient:
+    # Defines an HTTP API endpoint that calls the main function in getRecordForPatient.js
+    # - path: url path is /patientRecords/{id}
+    # - method: GET request
+    handler: updateProfileForPatient.main
+    events:
+      - http:
+          path: patients/profile/{userPoolUserId}
+          method: put
           cors: true
           authorizer: aws_iam
 

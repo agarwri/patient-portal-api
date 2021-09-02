@@ -17,7 +17,9 @@ export const main = handler(async (event, context) => {
     for (var j = 0; j < attributes.length; j++) {
       if (attributes[j].Name === "email") {
         usersArray[i].Email = attributes[j].Value;
-        break;
+      }
+      if (attributes[j].Name === "name") {
+        usersArray[i].Name = attributes[j].Value;
       }
     }
   }

@@ -2,6 +2,25 @@ import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
+  const getRecordParams = {
+    TableName: process.env.tableName,
+    IndexName: process.env.indexName,
+        // 'Key' defines the partition key and sort key of the item to be retrieved
+        // - 'userId': Identity Pool identity id of the authenticated user
+        // - 'noteId': path parameter
+    ExpressionAttributeValues: {
+          ":userPoolUserId": event.pathParameters.userPoolUserId,
+          ":recordId": event.pathParameters.id,
+    },
+    KeyConditionExpression: "userPoolUserId = :userPoolUserId and recordId = :recordId"
+    
+  };
+    
+  const recordToUpdateArray = await dynamoDb.query(getRecordParams);
+      // Return the matching list of items in response body
+  const recordToUpdate = recordToUpdateArray.Items[0];
+  const identityId = recordToUpdate.userId;
+
   const data = JSON.parse(event.body);
   const params = {
     TableName: process.env.tableName,
@@ -9,7 +28,7 @@ export const main = handler(async (event, context) => {
     // - 'userId': Identity Pool identity id of the authenticated user
     // - 'noteId': path parameter
     Key: {
-      userId: event.requestContext.identity.cognitoIdentityId,
+      userId: identityId,
       recordId: event.pathParameters.id
     },
     // 'UpdateExpression' defines the attributes to be updated

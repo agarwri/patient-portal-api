@@ -1,6 +1,7 @@
 import * as uuid from "uuid";
 import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
+//date, type, clinic, reason, attachments
 
 export const main = handler(async (event, context) => {
   const data = JSON.parse(event.body);
@@ -20,8 +21,11 @@ export const main = handler(async (event, context) => {
       userId: event.requestContext.identity.cognitoIdentityId,
       userPoolUserId: parts[parts.length - 1],
       recordId: uuid.v1(),
-      content: data.content,
-      attachment: data.attachment,
+      date: data.date,
+      type: data.type,
+      clinic: date.clinic,
+      reason: date.reason,
+      attachments: data.attachments,
       createdAt: Date.now()
     }
   };
