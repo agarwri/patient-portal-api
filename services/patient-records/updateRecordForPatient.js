@@ -13,15 +13,13 @@ export const main = handler(async (event, context) => {
           ":recordId": event.pathParameters.id,
     },
     KeyConditionExpression: "userPoolUserId = :userPoolUserId and recordId = :recordId"
-    
   };
-    
+  
   const recordToUpdateArray = await dynamoDb.query(getRecordParams);
-      // Return the matching list of items in response body
   const recordToUpdate = recordToUpdateArray.Items[0];
   const identityId = recordToUpdate.userId;
-
   const data = JSON.parse(event.body);
+
   const params = {
     TableName: process.env.tableName,
     // 'Key' defines the partition key and sort key of the item to be updated
