@@ -54,6 +54,7 @@ provider:
     - Effect: Allow
       Action:
         - cognito-idp:ListUsers
+        - cognito-idp:AdminUpdateUserAttributes
       # Restrict our IAM role permissions to
       # the specific table for the stage
       Resource:
