@@ -1,11 +1,11 @@
 {
-  "body": "{\"content\":\"new world\",\"attachment\":\"new.jpg\"}",
+  "body": "{\"clinic\":\"bhowanipore\",\"type\":\"online\"}",
   "pathParameters": {
-    "id": "c9aeee90-0458-11eb-819c-0f56d3c81332"
+    "id": "2ca13d80-0c34-11ec-a59f-655f0f637fa1"
   },
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "us-east-1:a57276bf-ae80-423b-a0bb-5bd98ed8f686"
     }
   }
 }
