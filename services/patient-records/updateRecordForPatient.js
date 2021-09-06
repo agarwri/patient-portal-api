@@ -31,13 +31,19 @@ export const main = handler(async (event, context) => {
     },
     // 'UpdateExpression' defines the attributes to be updated
     // 'ExpressionAttributeValues' defines the value in the update expression
-    UpdateExpression: "SET content = :content, attachment = :attachment",
+    UpdateExpression: "SET #dt = :date, #tp = :type, clinic = :clinic, reason = :reason, attachments = :attachments, notes = :notes, doctorAttachments = :doctorAttachments", 
     ExpressionAttributeValues: {
       ":date": data.date || null,
       ":type": data.type || null,
       ":clinic": data.clinic || null,
       ":reason": data.reason || null,
       ":attachments": data.attachments || null,
+      ":notes": data.notes || null,
+      "doctorAttachments": data.doctorAttachments || null,
+    },
+    ExpressionAttributeNames: {
+      "#dt": "date",
+      "#tp": "type"
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update; you
