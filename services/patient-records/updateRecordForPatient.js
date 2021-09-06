@@ -39,7 +39,7 @@ export const main = handler(async (event, context) => {
       ":reason": data.reason || null,
       ":attachments": data.attachments || null,
       ":notes": data.notes || null,
-      "doctor_attachments": data.doctor_attachments || null,
+      ":doctor_attachments": data.doctor_attachments || null,
     },
     ExpressionAttributeNames: {
       "#dt": "date",
