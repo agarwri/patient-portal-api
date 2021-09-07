@@ -17,14 +17,14 @@ export const main = handler(async (event, context) => {
     Limit: 10,
     //AttributesToGet: [],
   };
-  const adminUsers = await cognito.listUsersInGroup(params);
+  const adminUsers = await cognito.listUsersInGroup(adminUsersParams);
   const adminUsersArray = adminUsers.Users;
   const adminUsernames = adminUsersArray.map(user => user.Username);
   const result = [];
 
   for (var i = 0; i < usersArray.length; i++) {
     var user = usersArray[i];
-    if(!adminUsernames.includes(user.Username)) { 
+    if(!adminUsernames.includes(user.Username)) {
       var attributes = user.Attributes;
       for (var j = 0; j < attributes.length; j++) {
         if (attributes[j].Name === "email") {
@@ -35,10 +35,8 @@ export const main = handler(async (event, context) => {
         }
       }
       result.push(user);
-    }    
+    }
   }
-  
 
-  
   return result;
 });
