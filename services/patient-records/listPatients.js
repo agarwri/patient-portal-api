@@ -8,23 +8,37 @@ export const main = handler(async (event, context) => {
     Limit: 10,
     //AttributesToGet: [],
   };
-  const result = await cognito.listUsers(params);
+  const allUsers = await cognito.listUsers(params);
+  const usersArray = allUsers.Users;
 
-  const usersArray = result.Users;
+  const adminUsersParams = {
+    GroupName: "AdminUsers",
+    UserPoolId: process.env.userPoolId,
+    Limit: 10,
+    //AttributesToGet: [],
+  };
+  const adminUsers = await cognito.listUsersInGroup(params);
+  const adminUsersArray = adminUsers.Users;
+  const adminUsernames = adminUsersArray.map(user => user.Username);
+  const result = [];
 
   for (var i = 0; i < usersArray.length; i++) {
-    var attributes = usersArray[i].Attributes;
-    for (var j = 0; j < attributes.length; j++) {
-      if (attributes[j].Name === "email") {
-        usersArray[i].Email = attributes[j].Value;
+    var user = usersArray[i];
+    if(!adminUsernames.includes(user.Username)) { 
+      var attributes = user.Attributes;
+      for (var j = 0; j < attributes.length; j++) {
+        if (attributes[j].Name === "email") {
+          user.Email = attributes[j].Value;
+        }
+        if (attributes[j].Name === "name") {
+          user.Name = attributes[j].Value;
+        }
       }
-      if (attributes[j].Name === "name") {
-        usersArray[i].Name = attributes[j].Value;
-      }
-    }
+      result.push(user);
+    }    
   }
-  //const result = await dynamoDb.query(params);
+  
 
-  // Return the matching list of items in response body
-  return usersArray;
+  
+  return result;
 });
